@@ -1,0 +1,50 @@
+<project default="junit" basedir=".">	
+
+    <target name="clean">
+    	<delete dir="bin"/>
+    </target>
+
+
+    <target name="init" depends="clean">
+    	<mkdir dir="bin"/>
+    </target>
+
+
+	<target name="compile" depends="init">
+        <path id="master-classpath">
+          <fileset dir="lib">
+            <include name="*.jar"/>
+          </fileset>
+        </path>
+
+        <javac srcdir="src" destdir="bin/">
+            <classpath refid="master-classpath"/>
+        </javac>
+    </target>
+
+
+    <target name="junit"> <!-- depends="compile">-->
+        <junit printsummary="yes" fork="yes" haltonfailure="yes">
+        <classpath>
+            <pathelement location="lib/junit-4.12.jar"/>
+            <pathelement location="lib/hamcrest-core-1.3.jar"/>
+            <pathelement location="bin"/>
+        </classpath>
+<formatter type="plain"/>
+            <formatter type="xml"/>
+        <batchtest fork="yes" todir="testReports">
+        <fileset dir="bin">
+          <include name="**/*Test*.class"/>
+        </fileset>
+      </batchtest>
+
+    <!-- 
+        <test name="org.elier.hp.tree.TreeNodeTest" outfile="result">
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+        </test>
+    -->
+      </junit>
+    </target>
+       
+</project>
