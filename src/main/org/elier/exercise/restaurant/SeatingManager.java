@@ -8,7 +8,7 @@ public class SeatingManager {
 	private List<CustomerGroup> groupList = new LinkedList<CustomerGroup>();
 
 	private void heuristicAssigment() {
-		// set of group with no table ordered by arriving time
+		// goup list with no table assigned ordered by arriving time
 		TreeList<CustomerGroup> waitingGroups 
 			= new TreeList<CustomerGroup>(
 				new Comparator(CustomerGroup() {
@@ -43,13 +43,13 @@ public class SeatingManager {
 
 	public void arrives(CustomerGroup group) {
 		groupList.add(group);
-		heuristicAssigment();	
+		heuristicAssigment(); / *** /
 	}
 
 	public void leaves(CustomerGroup group) throws RuntimeException {
 		if (groupList.remove(group)) {
 			group.leave();
-			heuristicAssigment();
+			heuristicAssigment(); / *** /
 			return;
 		}
 	}
