@@ -34,7 +34,7 @@
             <formatter type="xml"/>
         <batchtest fork="yes" todir="testReports">
         <fileset dir="bin">
-          <include name="**/*Test*.class"/>
+          <include name="**/*Test.class"/>
         </fileset>
       </batchtest>
 
