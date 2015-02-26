@@ -1,4 +1,4 @@
-package org.elier.hp.tree;
+package org.elier.exercise.tree;
 
 import java.util.ArrayList;
 

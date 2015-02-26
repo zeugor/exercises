@@ -1,4 +1,4 @@
-package org.elier.hp.tree;
+package org.elier.exercise.tree;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -23,6 +23,6 @@ public class TreeNodeTest {
 		assertEquals(b, h.findFirstCommonAncestor(c));
 		assertEquals(a, f.findFirstCommonAncestor(a));
 		assertEquals(d, h.findFirstCommonAncestor(e));
-		assertNotSame(f, g.findFirstCommonAncestor(c));
+		assertNotSame(c, g.findFirstCommonAncestor(c));
 	}
 }

@@ -1,60 +1,61 @@
-package org.elier.hp.restaurant;
+package org.elier.exercise.restaurant;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.TreeSet;
 
 public class SeatingManager {
-	private List<Table> tables;
-	private List<CustomerGroup> groupList = new LinkedList<CustomerGroup>();
-
-	private void heuristicAssigment() {
-		// goup list with no table assigned ordered by arriving time
-		TreeList<CustomerGroup> waitingGroups 
-			= new TreeList<CustomerGroup>(
-				new Comparator(CustomerGroup() {
-					@Override
-					int compare(CustomerGroup g1, CustomerGroup g2) {
-						return 0;
-					}
-					@Override
-					public equals(Object obj) {
-						// implement equals
-					}
-				};
-				)) {
-			{
-				for (CustomerGroup group : groupList) {
-					if (group.getTable() == null) {
-						add(group);
+	private TreeSet<Table> tables;
+	private TreeSet<CustomerGroup> groupList = new TreeSet<CustomerGroup>() {
+		void heuristicAssigment() {
+			for (CustomerGroup group : this) {
+				if (group.getTableAssigned() == null) {
+					for (Table t : tables) {
+						if (group.getSize() <= t.getAvailableChairs()) {
+							try {
+								group.setTableAssigned(t);
+								break;
+							} catch (Exception e) {
+								throw new NullPointerException();
+							}
+						}
 					}
 				}
 			}
-		};
-		for (CustomerGroup group : waitingGroups) {
-
 		}
-		// loop groups 
-			// loop 
-	}
 
-	public SeatingManager(List<Table> tables) {
+		@Override
+		public boolean add(CustomerGroup group) {
+			boolean res = super.add(group);
+			heuristicAssigment();
+			return res;
+		}
+
+		@Override
+		public boolean remove(Object obj) {
+			boolean res = super.remove(obj);
+			try {
+				((CustomerGroup) obj).leaveTable();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			heuristicAssigment();
+			return res;
+		}
+	};
+
+	public SeatingManager(TreeSet<Table> tables) {
 		this.tables = tables;
 	}
 
-	public void arrives(CustomerGroup group) {
+	public void arrives(CustomerGroup group) throws Exception {
 		groupList.add(group);
-		heuristicAssigment(); / *** /
 	}
 
-	public void leaves(CustomerGroup group) throws RuntimeException {
-		if (groupList.remove(group)) {
-			group.leave();
-			heuristicAssigment(); / *** /
-			return;
-		}
+	public void leaves(CustomerGroup group) throws Exception {
+		groupList.remove(group);
 	}
 
 	public Table locate(CustomerGroup group) {
-		return groupList.getTable();
+		return group.getTableAssigned();
 	}
+
 }
